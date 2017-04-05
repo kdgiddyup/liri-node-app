@@ -38,3 +38,6 @@ jspm_packages
 
 # directory hidden files
 .DS_Store
+
+# secure keys
+keys.js

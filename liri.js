@@ -1,12 +1,11 @@
 // grab keys for twitter api
-var twitterClient = require("./keys.js");
-var twitter = require("twitter");
+var twitterAuth = require("./keys.js");
+var Twitter = require("twitter");
 var spotify = require("spotify");
 var request = require("request");
 var omdb = require("omdb");
 var inquirer = require("inquirer");
 var fs = require("fs");
-var Base64 = require("Base64");
 var command = [];
 
 // start with an inquirer prompt for LIRI's action to take
@@ -56,38 +55,18 @@ function inputSwitch(input) {
 
 // twitter function 
 function fTwitter(){
-    var auth = new Buffer(encodeURI(twitterClient.twitterKeys.consumer_key)+':'+encodeURI(twitterClient.twitterKeys.consumer_secret)).toString('base64');
+    var client = new Twitter(
+        twitterAuth.keys
+    );
 
-    request({
-        headers: {
-        'Authorization': 'Basic '+auth,
-        'Content_Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        },
-        body: 'grant_type=client_credentials',
-        uri: 'https://api.twitter.com/oauth/request_token',
-        method: 'POST'
-        }, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                console.log('Body: '+ body)
-            }
-            else
-                console.log('Error: '+error)
-  });
+    var params = {screen_name: 'kdavis2001'};
+    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+    if (!error) 
+        console.log(tweets)
+    else  
+        console.log(error)
+    });
 
-/*
-
-    var queryUrl ="https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kdavis2001&count=20";
-    request(queryUrl,function(error, response, body){
-        // success
-        if (!error && response.statusCode === 200) {
-            body = JSON.parse(body);
-            console.log(body);
-        }
-        else 
-            console.log('Error: '+error)
-    })
-
-    */
 }
 
 // spotify function
