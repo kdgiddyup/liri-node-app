@@ -41,7 +41,7 @@ function start(userMenu){
 function inputSwitch(input) {
 
     // log each command by it's string and a date/time stamp
-    log('['+new Date()+']\nCommand: "'+input+'"\n');
+    log('\n\n************************\nCommand: "'+input+'"\n[at '+new Date().toLocaleString()+']');
     switch (input) {
         case "Go away":
             console.log("Bye Felicia!");
@@ -73,13 +73,17 @@ function fTwitter(){
     var params = {screen_name: 'kdavis2001'};
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
     if (!error) {
+        log('\n****OUTPUT****\n');
         // trim to last 20 elements in the array (here, each element is a tweet objects) with <array>.slice(-20);
         var tweets = tweets.slice(-20);
         // we don't use the normal for-loop order because we want to present the tweets in chronological rather than reverse chronological order
         // that is, the last tweet in the array is the oldest but we want that to show first, numbered "1"
+        // but first start a line in the log
         for (var i=19;i>-1;i--){
-            console.log('\n\nTweet '+(20-i)+': '+tweets[i].text);
-            console.log('Created: '+tweets[i].created_at)
+            var output = '\n\nTweet '+(20-i)+': '+tweets[i].text+'\nCreated: '+tweets[i].created_at;
+            // output to the screen and log.txt
+            console.log(output);
+            log(output);
         }
         // goBack() is a function that allows the user to exit or return to the action menu
         goBack();
@@ -113,7 +117,7 @@ function fSpotify(){
         }
     ]).then(function(query){
         // log the song choice as user input
-        log('User input: '+query.title+' at ['+new Date()+']');
+        log('\nUser input: Search Spotify for "'+query.title+'"');
         var title=query.title;
         if (!title)
             title='The Sign';
@@ -144,7 +148,7 @@ function doSpotify(what){
                 }   
             ]).then(function(trackCount){
                 // log response as user input
-                log('User input: Show '+trackCount.numSongs+' tracks at ['+new Date()+']');
+                log('\nUser input: Show '+trackCount.numSongs+' results');
                 // separate the actual console logging so we can send the songData array; otherwise it is undefined in this callback function
                 displaySongs(songData,trackCount.numSongs);
                 });  // end spotify request call
@@ -153,6 +157,9 @@ function doSpotify(what){
 } // end doSpotify function
 
 function displaySongs(songArray, searchNum){
+    // start a line in the log.txt file
+    log('\n\n****OUTPUT****\n');
+  
     // reduce songData array (now an argument called songArray) by number of songs user inputs
     // 1. parse input as an integer called tracksToShow
     var tracksToShow = parseInt(searchNum);
@@ -170,9 +177,12 @@ function displaySongs(songArray, searchNum){
     
     // reduce songData array to this length
     var songArray = songArray.slice(0,tracksToShow);
-        
+   
+    // loop through tracks and output to screen and log.txt
     for (var i=0;i<songArray.length;i++){
-        console.log(' Track '+(i+1)+'\n**********\nArtist(s): '+songArray[i].album.artists[0].name+'\nPreview URL: '+songArray[i].preview_url+'\nAlbum: '+songArray[i].album.name+'\n\n')
+        var output = '\nTrack '+(i+1)+'\n**********\nArtist(s): '+songArray[i].album.artists[0].name+'\nPreview URL: '+songArray[i].preview_url+'\nAlbum: '+songArray[i].album.name+'\n';
+        console.log(output);
+        log(output);
     }
     // return to exit/return prompt
     goBack();
@@ -199,7 +209,7 @@ function fOMDB(){
     ]).then(function(query){
         
         // log movie title as user input
-        log('User input: Search for title "'+query.title+'" at ['+new Date()+']');
+        log('\nUser input: Search OMBD for movie "'+query.title+'"');
         var title=query.title
         
         // in case user enters no title we have a default choice
@@ -218,13 +228,16 @@ function doMovie(what){
         }
         // 'movies' is the response object; display relevant values from it:
         else {
-            console.log('**********\nTop result\n"'+movies.title+'"\nYear: '+movies.year+'\nIMDB rating: '+movies.imdb.rating+'\nWhere produced: '+movies.countries.toString()+'\nPlot summary: '+movies.plot);
+            log('\n****OUTPUT****\n');
+            var output = 'Top result\n"'+movies.title+'"\nYear: '+movies.year+'\nIMDB rating: '+movies.imdb.rating+'\nWhere produced: '+movies.countries.toString()+'\nPlot summary: '+movies.plot; 
             if (movies.tomato){
-                console.log('Rotten Tomatoes rating: '+movies.tomato.rating+'\nRotten Tomatoes link: '+ movies.tomato.url)
+                output+= '\nRotten Tomatoes rating: '+movies.tomato.rating+'\nRotten Tomatoes link: '+ movies.tomato.url
+            };
+            console.log(output);
+            log(output);
             };
         // return to exit/go again prompt
         goBack();
-        }
     })
 }
 

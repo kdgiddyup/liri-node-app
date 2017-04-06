@@ -1,0 +1,165 @@
+
+
+************************
+Command: "Spotify a song"
+[at 4/5/2017, 11:24:01 PM]
+User input: Search Spotify for "Stupid Face Haley Bonar"
+User input: Show 2 results
+
+****OUTPUT****
+
+Track 2
+**********
+Artist(s): Haley Bonar
+Preview URL: https://p.scdn.co/mp3-preview/d8cc68a3b5239dc21cf87e85161c2331edf0a61b?cid=null
+Album: Stupid Face
+
+Track 1
+**********
+Artist(s): Haley Bonar
+Preview URL: https://p.scdn.co/mp3-preview/d8cc68a3b5239dc21cf87e85161c2331edf0a61b?cid=null
+Album: Impossible Dream
+
+
+************************
+Command: "Spotify a song"
+[at 4/5/2017, 11:24:21 PM]
+User input: Search Spotify for ""
+User input: Show 1 results
+Track 1
+**********
+Artist(s): Ty Dolla $ign
+Preview URL: https://p.scdn.co/mp3-preview/70f126c139847335bc03c756c55b80c99892268e?cid=null
+Album: Or Nah (feat. The Weeknd, Wiz Khalifa and DJ Mustard) [Remix Version]
+
+
+****OUTPUT****
+
+
+************************
+Command: "Spotify a song"
+[at 4/5/2017, 11:24:32 PM]
+User input: Search Spotify for ""
+User input: Show 2 results
+
+****OUTPUT****
+
+Track 1
+**********
+Artist(s): Ty Dolla $ign
+Preview URL: https://p.scdn.co/mp3-preview/70f126c139847335bc03c756c55b80c99892268e?cid=null
+Album: Or Nah (feat. The Weeknd, Wiz Khalifa and DJ Mustard) [Remix Version]
+
+Track 2
+**********
+Artist(s): Jeremih
+Preview URL: https://p.scdn.co/mp3-preview/0de6a01bbbd0c9a2d9cd85febcc8ea099773932e?cid=null
+Album: Late Nights: The Album
+
+
+************************
+Command: "Spill it about a movie"
+[at 4/5/2017, 11:24:46 PM]
+User input: Search OMBD for movie "The Money Pit"
+****OUTPUT****
+Top result
+"The Money Pit"
+Year: 1986
+IMDB rating: 6.3
+Where produced: USA
+Plot summary: A young couple struggles to repair a hopelessly dilapidated house.
+
+************************
+Command: "Do whatever it wants"
+[at 4/5/2017, 11:25:02 PM]
+
+************************
+Command: "Spotify a song"
+[at 4/5/2017, 11:25:02 PM]
+User input: Show 2 results
+Track 1
+**********
+Artist(s): Rick Astley
+Preview URL: https://p.scdn.co/mp3-preview/22bf10aff02db272f0a053dff5c0063d729df988?cid=null
+Album: Whenever You Need Somebody
+
+Track 2
+**********
+Artist(s): Rick Astley
+Preview URL: https://p.scdn.co/mp3-preview/50376a95e8639932167e0995debc66e6eb7a2a54?cid=null
+Album: Platinum & Gold Collection
+
+
+****OUTPUT****
+
+
+************************
+Command: "Show my latest Tweets"
+[at 4/5/2017, 11:25:14 PM]
+****OUTPUT****
+
+
+Tweet 1: By the way, tonight's win was #Clemson's first-ever against a No. 1. They picked a good one. https://t.co/XPuGNixJDg
+Created: Tue Jan 10 06:00:39 +0000 2017
+
+Tweet 2: RT @RobGodfrey: In honor of Clemson's national football championship, @nikkihaley will fly the Tigers' flag atop the Statehouse dome on Tue…
+Created: Tue Jan 10 11:14:04 +0000 2017
+
+Tweet 4: Beaufort County death penalty case forever changed fallen officers’ families https://t.co/ox6osS3aDS
+Created: Sat Jan 21 16:25:43 +0000 2017
+
+Tweet 3: RT @timdominickSC: The Clemson flag flies over the South Carolina State House after the Tiger's National Champ win. #thestate #Clemson http…
+Created: Tue Jan 10 11:14:38 +0000 2017
+
+Tweet 5: RT @timgrieve: Local journalism from @mcclatchy's @islandpacket, literally saving lives. https://t.co/ofqXQxSXhO
+Created: Wed Feb 08 03:39:11 +0000 2017
+
+Tweet 6: RT @ConnieSchultz: How did we find out about Michael Flynn? 
+
+Journalism. 
+
+If you don't yet, pls subscribe to news sources you trust. http…
+Created: Tue Feb 14 12:30:16 +0000 2017
+
+Tweet 7: RT @Mark_Cassell: And here's a break-dancing log. https://t.co/HMJ6h2P6pk
+Created: Wed Feb 15 11:19:54 +0000 2017
+
+Tweet 8: RT @MandyMatney: In #Charleston for a day, and the bartender at @ClosedforBiz gave us this lovely guide 🙌🏼🙌🏼#herewego #cheers https://t.co/…
+Created: Fri Feb 17 18:41:41 +0000 2017
+
+Tweet 9: @MandyMatney Gonna make it in tomorrow? :)
+Created: Fri Feb 17 18:42:13 +0000 2017
+
+Tweet 10: My college president was a good guy, but he wasn't this fun. https://t.co/plAL6adlW4
+Created: Sat Feb 25 00:15:02 +0000 2017
+
+Tweet 11: This is awesome https://t.co/BKCGcjST4C
+Created: Thu Mar 09 01:48:15 +0000 2017
+
+Tweet 12: @jimkwik Bluffton SC
+Created: Thu Mar 09 11:18:42 +0000 2017
+
+Tweet 13: RT @MandyMatney: How awesome is this? @ChipHHI named his latest catch Hunter after this special Bluffton teen. Story in @islandpacket soon!…
+Created: Fri Mar 10 20:50:27 +0000 2017
+
+Tweet 14: RT @Joestjohn68: #hail from Taylor's SC.. #Weather https://t.co/ZiKa9cOKok
+Created: Wed Mar 22 13:33:04 +0000 2017
+
+Tweet 15: RT @HiltonTheShark: Yup, I'm in love with Myrtle Beach 🏝 https://t.co/TMPKlojG0b #LowcountryExpedition https://t.co/plRHbv5uqe
+Created: Thu Mar 23 12:44:44 +0000 2017
+
+Tweet 16: RT @GrahamCawthon: #FlashbackFriday Feb. 7, 2001
+Space Shuttle Atlantis launches from @NASAKennedy. View from Hilton Head. Shared by Sun Ci…
+Created: Fri Mar 24 18:17:32 +0000 2017
+
+Tweet 17: THE SIN-DERELLAS: Gamecocks crash into Final Four https://t.co/X8MY19HvBE
+Created: Sun Mar 26 23:40:30 +0000 2017
+
+Tweet 18: RT @CBSSports: Who will claim the ULTIMATE prize? https://t.co/GgF0PX0Jwg
+Created: Sun Mar 26 23:48:43 +0000 2017
+
+Tweet 19: #HaleyBonar #ImpossibleDream = Deserves much more attention. Listen at least 3 times, one being on a highway in a car loudly.
+Created: Sat Apr 01 14:04:37 +0000 2017
+
+Tweet 20: Coming our way https://t.co/qViI59C1JD
+Created: Mon Apr 03 21:57:39 +0000 2017
