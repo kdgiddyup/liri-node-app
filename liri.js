@@ -34,6 +34,7 @@ function start(userMenu){
         });
 }
 function inputSwitch(input) {
+    log('Command: '+input+' at ['+new Date()+']');
     switch (input) {
         case "go away":
             console.log("Bye Felicia!");
@@ -94,6 +95,7 @@ function fSpotify(){
             message: "And the song is?"
         }
     ]).then(function(query){
+        log('User input: '+query.title+' at ['+new Date()+']');
         var title=query.title;
         if (!title)
             title='The Sign';
@@ -118,6 +120,7 @@ function doSpotify(what){
                     message: 'Show how many?'
                 }   
             ]).then(function(trackCount){
+                log('User input: Show '+trackCount.numSongs+' tracks at ['+new Date()+']');
                 displaySongs(songData,trackCount.numSongs);
                 });  // end spotify request call
             }
@@ -166,6 +169,7 @@ function fOMDB(){
             message: "And the movie is?"
         }
     ]).then(function(query){
+        log('User input: Search for title "'+query.title+'" at ['+new Date()+']');
         var title=query.title
         if (title == '')
             title = "Mr. Nobody";
@@ -180,16 +184,9 @@ function doMovie(what){
             return console.error(err);
         }
         else {
-            console.log('**********');
-            console.log('Top result');
-            console.log('"'+movies.title+'"');
-            console.log('Year: '+movies.year);
-            console.log('IMDB rating: '+movies.imdb.rating);
-            console.log('Where produced: '+movies.countries.toString());
-            console.log('Plot summary: '+movies.plot)
+            console.log('**********\nTop result\n"'+movies.title+'"\nYear: '+movies.year+'\nIMDB rating: '+movies.imdb.rating+'\nWhere produced: '+movies.countries.toString()+'\nPlot summary: '+movies.plot);
             if (movies.tomato){
-                console.log('Rotten Tomatoes rating: '+movies.tomato.rating);
-                console.log('Rotten Tomatoes link: '+ movies.tomato.url)
+                console.log('Rotten Tomatoes rating: '+movies.tomato.rating+'\nRotten Tomatoes link: '+ movies.tomato.url)
             };
         goBack();
         }
@@ -215,11 +212,18 @@ function goBack(){
         {
         type: 'confirm',
         name: 'confirm',
-        message: 'Start over?',
+        message: 'Go again?',
         default: true
         }
     ]).then(function(goBack){
         if (goBack.confirm)
             start(menu)
     })
+}
+
+function log(command){
+    fs.appendFile('log.txt','\n'+command+'\n',function(err){
+        if (err)
+            console.log('/nThere was a logging error. Message: '+err)
+    });
 }
