@@ -61,8 +61,15 @@ function fTwitter(){
 
     var params = {screen_name: 'kdavis2001'};
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
-    if (!error) 
-        console.log(tweets)
+    if (!error) {
+        // trim to last 20 elements in the array (here, tweet objects) with <array>.slice(-20);
+        var tweets = tweets.slice(-20);
+        for (var i=19;i>-1;i--){
+            console.log('\n\nTweet '+(20-i)+': '+tweets[i].text);
+            console.log('Created: '+tweets[i].created_at)
+        }
+        goBack();
+    }
     else  
         console.log(error)
     });
@@ -88,6 +95,8 @@ function fSpotify(){
         }
     ]).then(function(query){
         var title=query.title;
+        if (!title)
+            title='The Sign';
         doSpotify(title);
     })
     }
@@ -99,17 +108,46 @@ function doSpotify(what){
         }
         else {
             // Do something with 'data'
-           
-            var songData = data.tracks.items[0];
-            console.log('**********');
-            console.log('Top result');
-            console.log('Artist(s): '+songData.album.artists[0].name);
-            console.log('Preview URL: '+songData.preview_url);
-            console.log('Album: '+songData.album.name)
-        }
-        goBack();
-        });
-}
+            songData = data.tracks.items;
+            console.log('\nWe found at least '+songData.length+' possible matches for "'+what+'".\n');
+            
+            var numToList = inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'numSongs',
+                    message: 'Show how many?'
+                }   
+            ]).then(function(trackCount){
+                displaySongs(songData,trackCount.numSongs);
+                });  // end spotify request call
+            }
+    });
+} // end doSpotify function
+
+function displaySongs(songArray, searchNum){
+    // reduce songData array by number of songs user inputs
+    // 1. parse input as an integer called tracksToShow
+    var tracksToShow = parseInt(searchNum);
+    
+    // error checking: if greater than tracks available, set to tracks available
+    if (tracksToShow > songArray.length) {
+        tracksToShow = songArray.length
+    }
+
+    // or, if user inputs 0 or negative, set tracksToShow to 1 
+    else if (tracksToShow <= 0) {
+        tracksToShow = 1;
+    }
+    
+    // reduce songData array to this length
+    var songArray = songArray.slice(0,tracksToShow);
+        
+    for (var i=0;i<songArray.length;i++){
+    console.log(' Track '+(i+1)+'\n**********\nArtist(s): '+songArray[i].album.artists[0].name+'\nPreview URL: '+songArray[i].preview_url+'\nAlbum: '+songArray[i].album.name+'\n\n')
+    }
+    // return to main menu
+    goBack();
+} // end displaySongs function
 
 // OMDB function
 function fOMDB(){
@@ -129,6 +167,8 @@ function fOMDB(){
         }
     ]).then(function(query){
         var title=query.title
+        if (title == '')
+            title = "Mr. Nobody";
         doMovie(title)    
         });
     }
