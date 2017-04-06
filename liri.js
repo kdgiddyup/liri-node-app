@@ -40,7 +40,7 @@ function start(userMenu){
 
 function inputSwitch(input) {
 
-    // log each command by it's string and a date/time stamp
+    // log each command by its string and a date/time stamp
     log('\n\n************************\nCommand: "'+input+'"\n[at '+new Date().toLocaleString()+']');
     switch (input) {
         case "Go away":
@@ -73,19 +73,19 @@ function fTwitter(){
     var params = {screen_name: 'kdavis2001'};
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
     if (!error) {
-        log('\n****OUTPUT****\n');
         // trim to last 20 elements in the array (here, each element is a tweet objects) with <array>.slice(-20);
         var tweets = tweets.slice(-20);
         // we don't use the normal for-loop order because we want to present the tweets in chronological rather than reverse chronological order
         // that is, the last tweet in the array is the oldest but we want that to show first, numbered "1"
         // but first start a line in the log
+        log('\n****OUTPUT****\n');
         for (var i=19;i>-1;i--){
             var output = '\n\nTweet '+(20-i)+': '+tweets[i].text+'\nCreated: '+tweets[i].created_at;
             // output to the screen and log.txt
             console.log(output);
             log(output);
         }
-        // goBack() is a function that allows the user to exit or return to the action menu
+        // goBack() is a function that prompts the user to exit or return to the action menu
         goBack();
     }
     else  
