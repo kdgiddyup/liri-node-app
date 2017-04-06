@@ -1,5 +1,6 @@
 // grab keys for twitter api
 var twitterAuth = require("./keys.js");
+// get these NPM modules
 var Twitter = require("twitter");
 var spotify = require("spotify");
 var request = require("request");
@@ -7,55 +8,64 @@ var omdb = require("omdb");
 var inquirer = require("inquirer");
 var fs = require("fs");
 var command = [];
-
-// start with an inquirer prompt for LIRI's action to take
+// set up an object for a later inquirer prompt for which action LIRI should take
 var menu = {
         type: "list",
         message: "Ask LIRI to ... ",
         choices: [
-            "show my latest Tweets",
+            "Show my latest Tweets",
             "Spotify a song",
-            "spill it about a movie",
-            "do whatever it wants",
-            "go away"
+            "Spill it about a movie",
+            "Do whatever it wants",
+            "Go away"
         ],
         name: "choice"
 };
 
+
+// we place the action prompt in a standalone function because we'll need it over and over
+// get things going by passing the menu object to the start function:
 start(menu);
 
 function start(userMenu){
     inquirer.prompt([
         userMenu
-        // the promise callback sends the choice object (as'input') with a switch; 
-        //we make the switch a standalone function so we can send  commands to it from other branches of code
     ]).then(function(userChoice){
+
+        // the callback gets the choice and sends it to a switch; 
+        //we make the switch a standalone function so we can send commands to it from other branches of code
         inputSwitch(userChoice.choice)
         });
 }
+
 function inputSwitch(input) {
-    log('Command: '+input+' at ['+new Date()+']');
+
+    // log each command by it's string and a date/time stamp
+    log('['+new Date()+']\nCommand: "'+input+'"\n');
     switch (input) {
-        case "go away":
+        case "Go away":
             console.log("Bye Felicia!");
             break;
-        case "show my latest Tweets":
+        case "Show my latest Tweets":
             fTwitter();
             break;
         case "Spotify a song":
             fSpotify();
             break;
-        case "spill it about a movie":
+        case "Spill it about a movie":
             fOMDB();
             break;
-        case "do whatever it wants":
+        case "Do whatever it wants":
             fRandom();
             break;
     }
 }
 
+// then we code out each action as a function
+
 // twitter function 
 function fTwitter(){
+    // set up a client object with our authorization keys
     var client = new Twitter(
         twitterAuth.keys
     );
@@ -63,12 +73,15 @@ function fTwitter(){
     var params = {screen_name: 'kdavis2001'};
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
     if (!error) {
-        // trim to last 20 elements in the array (here, tweet objects) with <array>.slice(-20);
+        // trim to last 20 elements in the array (here, each element is a tweet objects) with <array>.slice(-20);
         var tweets = tweets.slice(-20);
+        // we don't use the normal for-loop order because we want to present the tweets in chronological rather than reverse chronological order
+        // that is, the last tweet in the array is the oldest but we want that to show first, numbered "1"
         for (var i=19;i>-1;i--){
             console.log('\n\nTweet '+(20-i)+': '+tweets[i].text);
             console.log('Created: '+tweets[i].created_at)
         }
+        // goBack() is a function that allows the user to exit or return to the action menu
         goBack();
     }
     else  
@@ -79,6 +92,8 @@ function fTwitter(){
 
 // spotify function
 function fSpotify(){
+    // in the user chooses the 'random' option, an array "command" is created that has the contents of random.txt
+    // we first check to see if it has values, and use them
     if (command[1] != null) {
         // this was a LIRI choice
         var title = command[1];
@@ -86,7 +101,9 @@ function fSpotify(){
         command = [];
         // do Spotify call
         doSpotify(title); 
-        }
+    }
+    
+    // if not letting LIRI choose, we now ask the user what song they want info for
     else {
         inquirer.prompt([
         {
@@ -95,6 +112,7 @@ function fSpotify(){
             message: "And the song is?"
         }
     ]).then(function(query){
+        // log the song choice as user input
         log('User input: '+query.title+' at ['+new Date()+']');
         var title=query.title;
         if (!title)
@@ -103,6 +121,7 @@ function fSpotify(){
     })
     }
 }
+// we keep the actual spotify call separate because we come at it from a couple different places
 function doSpotify(what){
     spotify.search({ type: 'track', query: what }, function(err, data) {
         if ( err ) {
@@ -111,6 +130,10 @@ function doSpotify(what){
         else {
             // Do something with 'data'
             songData = data.tracks.items;
+            
+            // usually, spotify returns multiple tracks for a song title search, up to 20 per call
+            // here we tell user results and seek input on how many results to show 
+           
             console.log('\nWe found at least '+songData.length+' possible matches for "'+what+'".\n');
             
             var numToList = inquirer.prompt([
@@ -120,7 +143,9 @@ function doSpotify(what){
                     message: 'Show how many?'
                 }   
             ]).then(function(trackCount){
+                // log response as user input
                 log('User input: Show '+trackCount.numSongs+' tracks at ['+new Date()+']');
+                // separate the actual console logging so we can send the songData array; otherwise it is undefined in this callback function
                 displaySongs(songData,trackCount.numSongs);
                 });  // end spotify request call
             }
@@ -128,11 +153,12 @@ function doSpotify(what){
 } // end doSpotify function
 
 function displaySongs(songArray, searchNum){
-    // reduce songData array by number of songs user inputs
+    // reduce songData array (now an argument called songArray) by number of songs user inputs
     // 1. parse input as an integer called tracksToShow
     var tracksToShow = parseInt(searchNum);
     
-    // error checking: if greater than tracks available, set to tracks available
+    // 2. error checking
+    // if greater than tracks available, set to tracks available
     if (tracksToShow > songArray.length) {
         tracksToShow = songArray.length
     }
@@ -146,14 +172,15 @@ function displaySongs(songArray, searchNum){
     var songArray = songArray.slice(0,tracksToShow);
         
     for (var i=0;i<songArray.length;i++){
-    console.log(' Track '+(i+1)+'\n**********\nArtist(s): '+songArray[i].album.artists[0].name+'\nPreview URL: '+songArray[i].preview_url+'\nAlbum: '+songArray[i].album.name+'\n\n')
+        console.log(' Track '+(i+1)+'\n**********\nArtist(s): '+songArray[i].album.artists[0].name+'\nPreview URL: '+songArray[i].preview_url+'\nAlbum: '+songArray[i].album.name+'\n\n')
     }
-    // return to main menu
+    // return to exit/return prompt
     goBack();
 } // end displaySongs function
 
 // OMDB function
 function fOMDB(){
+    // in case we want our random choice to make a movie call, check that command array:
     if (command[1] != null) {
         // this was a LIRI choice
         var movie = command[1];
@@ -161,6 +188,7 @@ function fOMDB(){
         command = [];
         doMovie(movie)
     }
+    // otherwise, get user's input on which movie to search for
     else {
         inquirer.prompt([
         {
@@ -169,8 +197,12 @@ function fOMDB(){
             message: "And the movie is?"
         }
     ]).then(function(query){
+        
+        // log movie title as user input
         log('User input: Search for title "'+query.title+'" at ['+new Date()+']');
         var title=query.title
+        
+        // in case user enters no title we have a default choice
         if (title == '')
             title = "Mr. Nobody";
         doMovie(title)    
@@ -178,35 +210,39 @@ function fOMDB(){
     }
 }
 
+// as with spotify, separate the omdb call since we come to it from more than one place
 function doMovie(what){
     omdb.get(what,{tomatoes:true}, function(err, movies) {
         if(err) {
             return console.error(err);
         }
+        // 'movies' is the response object; display relevant values from it:
         else {
             console.log('**********\nTop result\n"'+movies.title+'"\nYear: '+movies.year+'\nIMDB rating: '+movies.imdb.rating+'\nWhere produced: '+movies.countries.toString()+'\nPlot summary: '+movies.plot);
             if (movies.tomato){
                 console.log('Rotten Tomatoes rating: '+movies.tomato.rating+'\nRotten Tomatoes link: '+ movies.tomato.url)
             };
+        // return to exit/go again prompt
         goBack();
         }
     })
 }
 
-// random function
+// random command function
 function fRandom(){
+    // look at random.txt
     fs.readFile('./random.txt','utf8',function(err,text){
         if(err)
             console.log('There was a problem: '+err)
         else {
-            // read text file to obtain LIRI's stored command
+            // parse text file to obtain LIRI's stored command
             command = text.split(',');
-            // send stored command to inputSwitch
+            // send stored command to input switch
             inputSwitch(command[0]);
         }
     })
-    
 }
+// prompt to allow user to exit LIRI or take additional actions
 function goBack(){
     inquirer.prompt([
         {
@@ -216,13 +252,15 @@ function goBack(){
         default: true
         }
     ]).then(function(goBack){
+        // if user wishes to continue, send them back to start menu, otherwise script exits to command line
         if (goBack.confirm)
             start(menu)
     })
 }
 
 function log(command){
-    fs.appendFile('log.txt','\n'+command+'\n',function(err){
+    // append passed-in command or user input to 'log.txt'; if log.txt doesn't exist, it will be created
+    fs.appendFile('log.txt',command,function(err){
         if (err)
             console.log('/nThere was a logging error. Message: '+err)
     });
